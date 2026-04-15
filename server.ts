@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import express from 'express';
-import { createServer as createViteServer } from 'vite';
 import * as cheerio from 'cheerio';
 import { GoogleGenAI } from '@google/genai';
 import path from 'path';
@@ -207,6 +206,7 @@ Return a JSON object where the keys are the IDs and the values are the rewritten
 if (!process.env.VERCEL) {
   const startLocalServer = async () => {
     if (process.env.NODE_ENV !== 'production') {
+      const { createServer: createViteServer } = await import('vite');
       const vite = await createViteServer({
         server: { middlewareMode: true },
         appType: 'spa',
