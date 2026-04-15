@@ -12,7 +12,7 @@ const jar = new CookieJar();
 const client = wrapper(axios.create({ jar, maxRedirects: 15 }));
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
   app.use(express.json({ limit: '50mb' }));
 
