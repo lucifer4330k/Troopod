@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import * as cheerio from 'cheerio';
@@ -6,8 +7,6 @@ import path from 'path';
 import axios from 'axios';
 import { wrapper } from 'axios-cookiejar-support';
 import { CookieJar } from 'tough-cookie';
-
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const jar = new CookieJar();
 const client = wrapper(axios.create({ jar, maxRedirects: 15 }));
@@ -28,6 +27,11 @@ const PORT = process.env.PORT || 3000;
     };
 
     try {
+      if (!process.env.GEMINI_API_KEY) {
+        throw new Error('API_KEY_INVALID: process.env.GEMINI_API_KEY is not set');
+      }
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
       const { landingPageUrl, adCreativeBase64, mimeType, tone, audience } = req.body;
 
       if (!landingPageUrl || !adCreativeBase64) {
